@@ -33,7 +33,10 @@ end
 
 function addBlip(pos)
   local blip = AddBlipForCoord(pos.x, pos.y, 0.0)
+  SetBlipColour(blip, 7)
+  SetBlipDisplay(blip, 8)
   SetBlipScale(blip, 1.0)
+  SetBlipAsShortRange(blip, true)
   return blip
 end
 
@@ -110,7 +113,7 @@ function _drawWall(p1, p2, minZ, maxZ, r, g, b, a)
   local topLeft = vector3(p1.x, p1.y, maxZ)
   local bottomRight = vector3(p2.x, p2.y, minZ)
   local topRight = vector3(p2.x, p2.y, maxZ)
-  
+
   DrawPoly(bottomLeft,topLeft,bottomRight,r,g,b,a)
   DrawPoly(topLeft,topRight,bottomRight,r,g,b,a)
   DrawPoly(bottomRight,topRight,topLeft,r,g,b,a)
@@ -132,7 +135,7 @@ function PolyZone:draw()
   local plyPos = GetEntityCoords(plyPed)
   local minZ = self.minZ or plyPos.z - zDrawDist
   local maxZ = self.maxZ or plyPos.z + zDrawDist
-  
+
   local points = self.points
   for i=1, #points do
     local point = self:TransformPoint(points[i])
@@ -283,7 +286,7 @@ function _isGridCellInsidePoly(cellX, cellY, poly)
       end
     end
   end
-  
+
   return true
 end
 
@@ -426,7 +429,7 @@ local function _initDebug(poly, options)
   if not debugEnabled then
     return
   end
-  
+
   Citizen.CreateThread(function()
     while not poly.destroyed do
       poly:draw()
@@ -487,7 +490,7 @@ end
 function PolyZone:isPointInside(point)
   if self.destroyed then
     print("[PolyZone] Warning: Called isPointInside on destroyed zone {name=" .. self.name .. "}")
-    return false 
+    return false
   end
 
   return _pointInPoly(point, self)
@@ -530,7 +533,7 @@ function PolyZone:onPointInOut(getPointCb, onPointInOutCb, waitInMS)
   if waitInMS ~= nil then _waitInMS = waitInMS end
 
   Citizen.CreateThread(function()
-    local isInside = nil
+    local isInside = false
     while not self.destroyed do
       if not self.paused then
         local point = getPointCb()
@@ -594,7 +597,6 @@ end
 function PolyZone:getBoundingBoxCenter()
   return self.center
 end
-
 
 function DrawPoly(ax, ay, az, bx, by, bz, cx, cy, cz, r, g, b, a)
   return Citizen.InvokeNative(GetHashKey("DRAW_POLY") & 0xFFFFFFFF, ax, ay, az, bx, by, bz, cx, cy, cz, r, g, b, a)
