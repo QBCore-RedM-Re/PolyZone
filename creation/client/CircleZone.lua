@@ -1,6 +1,5 @@
 local function handleInput(radius, center, useZ)
   local delta = 0.05
-  BlockWeaponWheelThisFrame()
   DisableControlAction(0, 36, true)
   DisableControlAction(0, 81, true)
   if IsDisabledControlPressed(0, 36) then -- ctrl held down

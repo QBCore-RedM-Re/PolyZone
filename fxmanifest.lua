@@ -4,7 +4,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 fx_version 'cerulean'
 
 description 'Define zones of different shapes and test whether a point is inside or outside of the zone'
-version '2.6.2-RedM'
+version '2.6.1-RedM'
 
 client_scripts {
   'client.lua',
